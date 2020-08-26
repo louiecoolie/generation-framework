@@ -21,15 +21,15 @@ function Generate.AnimalSpawns(region_center, region_radius, spawn_points, spawn
         spawn_value.Name = "spawn_value"
         spawn_value.Value = spawn_animal
 
-        local network_owner = Instance.new("StringValue")
-        network_owner.Name = "network_owner"
-        network_owner.Value = "nil"
+        local request_value = Instance.new("StringValue")
+        request_value.Name = "request_value"
+        request_value.Value = "nil"
 
         local spawn_number = Instance.new("NumberValue")
         spawn_number.Name = "spawn_number"
         spawn_number.Value = generation_number
 
-        network_owner.Parent = spawn_point
+        request_value.Parent = spawn_point
         spawn_value.Parent = spawn_point
         spawn_number.Parent = spawn_point
         

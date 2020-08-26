@@ -1,6 +1,7 @@
 local Resources = game:GetService("ServerStorage")
 local Assets = Resources:FindFirstChild("Assets")
 local ServerModules = Resources:WaitForChild("Modules", 60)
+local RunService = game:GetService("RunService")
 --local Database = Resources:WaitForChild("Database", 60)
 
 local Events = game:GetService("ReplicatedStorage"):WaitForChild("Events", 60)
@@ -20,32 +21,43 @@ for _, module in ipairs(ServerModules:GetChildren()) do
 end
 
 local init = {}
+local connections = {}
 
 function init.GenerateServer()
     Modules["Generate"].AnimalSpawns(Vector3.new(0,4,0), 30, 10, 0, "Doe")
-    Modules["Generate"].AnimalSpawns(Vector3.new(0,4,0), 10, 1, 0, "Guppy")
-    Modules["Generate"].AnimalSpawns(Vector3.new(0,4,20), 30, 10, 0, "Doe")
 end
 
 function init:CreateConnections()
-    self.SpawnRequest = Modules["Request"].RemoteFunction("spawn_request", Events)
-	self.AnimalRequest = Modules["Request"].RemoteEvent("animal_request", Events) --print(UpdateArea.Scan(char))
-    self.OwnershipRequest = Modules["Request"].RemoteFunction("ownership_request", Events)
 
+	self.AnimalRequest = Modules["Request"].RemoteEvent("animal_request", Events) --print(UpdateArea.Scan(char))
 end
 
 function init:EstablishConnections()
-    self.AnimalRequest.OnServerEvent:Connect(function(player, animal, position, spawn_object)
+    connections.Animals = self.AnimalRequest.OnServerEvent:Connect(function(player, animal, position, spawn_object)
             Modules["Animals"].Spawn(Assets.Animal:FindFirstChild(animal), position, player, Database.Player, spawn_object)
             
-        end)
-    self.SpawnRequest.OnServerInvoke = (function(player, animal, position)
-            --print(player, animal, position)
-            return Modules["Animals"].SpawnRequest(player, animal, position)
-            
-        end)
+    end)
 
-    print(self)
+    connections.UpdatePlayers = RunService.Heartbeat:Connect(function()
+
+            local players_container = workspace:FindFirstChild("players_container") or Instance.new("Folder", workspace)
+            players_container.Name = "players_container"
+            for _, player in pairs(game.Players:GetChildren()) do
+                if workspace:FindFirstChild(player.Name) then
+                    player.Character.Parent = players_container
+                end
+            end
+
+    end)
+
+    connections.UpdateAnimals = RunService.Heartbeat:Connect(function()
+        if workspace:FindFirstChild("players_container") then
+            Modules["Animals"].UpdateAnimals(workspace:FindFirstChild("players_container"):GetChildren())
+        end
+    end)
+
+
+
 end
 
 function init.StartServer()
