@@ -1,6 +1,6 @@
 local Animals = {}
  
-local animals_container = workspace:FindFirstChild("points_container") or Instance.new("Folder", workspace)
+local animals_container = workspace:FindFirstChild("animals_container") or Instance.new("Folder", workspace)
 animals_container.Name = "animals_container"
 
 local generated_animals = {}
@@ -18,34 +18,18 @@ function Animals:CreateNew(animal_name, animal_body)
 end
 
 function Animals.Spawn(animal, position, player, database, spawn_object)
-    local spawn_value = spawn_object:FindFirstChild("spawn_value")
     local generation_number = spawn_object:FindFirstChild("spawn_number")
 
     if generated_animals[generation_number] then 
         print("Animal has been printed in server!")
     else
+        if animal then
+            local spawn = Animals:CreateNew(animal.name, animal)
+            spawn.Body:SetPrimaryPartCFrame(position)
+            spawn.Body.Parent = animals_container
 
-        local spawn = Animals:CreateNew(animal.name, animal)
-        spawn.Body:SetPrimaryPartCFrame(position)
-        spawn.Body.Parent = animals_container
-
-        generated_animals[generation_number] = spawn.Body
-
-        --spawn.Body.PrimaryPart:SetNetworkOwner(player)
-
-
-        --network_owner.Value = player.Name
-        --spawn_object:SetNetworkOwner(player)
-        print(spawn_value.Value)
-        
-        local player_file = database:FindFirstChild(player.Name) or Instance.new("Folder", database)
-        if player_file.Name == "Folder" then
-            player_file.Name = player.Name
+            generated_animals[generation_number] = spawn.Body
         end
-
-        local animal_object = Instance.new("ObjectValue", player_file)
-        animal_object.Value = spawn.Body
-
     end
 end
 

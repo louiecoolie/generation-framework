@@ -1,5 +1,5 @@
 local Resources = game:GetService("ServerStorage")
-local Assets = Resources:FindFirstChild("Assets")
+local Assets = Resources:WaitForChild("Assets", 60)
 local ServerModules = Resources:WaitForChild("Modules", 60)
 local RunService = game:GetService("RunService")
 --local Database = Resources:WaitForChild("Database", 60)
@@ -29,10 +29,11 @@ function init.GenerateServer()
     Modules["Generate"].AnimalSpawns(Vector3.new(30,4,0), 30, 20, 0, "Doe")
     Modules["Generate"].AnimalSpawns(Vector3.new(-30,4,0), 30, 20, 0, "Doe")
     Modules["Generate"].AnimalSpawns(Vector3.new(0,4,-30), 30, 20, 0, "Doe")
+    Modules["Generate"].AnimalSpawns(Vector3.new(0,4,0), 30, 20, 0, nil, "Tree")
 end
 
 function init:CreateConnections()
-
+    self.PlantRequest = Modules["Request"].RemoteEvent("plant_request", Events)
 	self.AnimalRequest = Modules["Request"].RemoteEvent("animal_request", Events) --print(UpdateArea.Scan(char))
 end
 
@@ -40,6 +41,9 @@ function init:EstablishConnections()
     connections.Animals = self.AnimalRequest.OnServerEvent:Connect(function(player, animal, position, spawn_object)
             Modules["Animals"].Spawn(Assets.Animal:FindFirstChild(animal), position, player, Database.Player, spawn_object)
             
+    end)
+    connections.Plants = self.PlantRequest.OnServerEvent:Connect(function(player, plant, position, spawn_object)
+        Modules["Plants"].Grow(Assets.Plant:FindFirstChild(plant), position, spawn_object)
     end)
 
     connections.UpdatePlayers = RunService.Heartbeat:Connect(function()

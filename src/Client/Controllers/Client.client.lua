@@ -58,6 +58,11 @@ function init.EstablishConnections()
 
 	connections.UpdateAnimalRender = RunService.Heartbeat:Connect(function()
 		local animals = workspace:FindFirstChild("animals_container")
+		local plants = workspace:FindFirstChild("plants_container")
+
+		if plants and char then
+			Modules["UpdateArea"].UpdatePlantRender(char, plants:GetChildren())
+		end
 
 		if animals and char then
 			Modules["UpdateArea"].UpdateAnimalRender(char, animals:GetChildren())
@@ -75,11 +80,18 @@ function init.EstablishConnections()
 			if object.Name == "spawn_point" then
 				local request_value = object:FindFirstChild("request_value")
 				local spawn_value = object:FindFirstChild("spawn_value")
+				local plant_value = object:FindFirstChild("plant_value")
 
 				if request_value.Value == "nil" then
 					request_value.Value = "true"
 					--print(spawn_value.Value .. " " .. network_owner.Value)
-					Events["animal_request"]:FireServer(spawn_value.Value, object.CFrame, object)
+					if spawn_value.Value then
+						Events["animal_request"]:FireServer(spawn_value.Value, object.CFrame, object)
+					end
+					if plant_value.Value then
+						Events["plant_request"]:FireServer(plant_value.Value, object.CFrame, object)
+						print(plant_value.Value)
+					end
 				end
 			end
 		end

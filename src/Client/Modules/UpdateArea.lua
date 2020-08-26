@@ -23,25 +23,54 @@ end
 
 function UpdateArea.UpdateAnimalRender(player_character, animal_list)
     for _, animal in pairs(animal_list) do
-        local distance = (player_character.PrimaryPart.Position - animal.PrimaryPart.Position).Magnitude
-        if distance > 50 then
-            for _, part in pairs(animal:GetChildren()) do
-                part.Transparency = 1
-            end
-        elseif distance < 50 then
-            if animal.PrimaryPart.Transparency == 1 then
+
+        if player_character.PrimaryPart and animal.PrimaryPart then
+            local distance = (player_character.PrimaryPart.Position - animal.PrimaryPart.Position).Magnitude
+
+            if distance > 50 then
                 for _, part in pairs(animal:GetChildren()) do
-                    if part.Name == "RigidBody" then
-                        print("rigid body")
-                    else
-                        part.Transparency = 0
+                    part.Transparency = 1
+                end
+            elseif distance < 50 then
+                if animal.PrimaryPart.Transparency == 1 then
+                    for _, part in pairs(animal:GetChildren()) do
+                        if part.Name == "RigidBody" then
+                            print("rigid body")
+                        else
+                            part.Transparency = 0
+                        end
                     end
                 end
             end
         end
     end
+    
 end
 
+function UpdateArea.UpdatePlantRender(player_character, plant_list)
+    for _, plant in pairs(plant_list) do
+
+        if player_character.PrimaryPart and plant.PrimaryPart then
+            local distance = (player_character.PrimaryPart.Position - plant.PrimaryPart.Position).Magnitude
+
+            if distance > 50 then
+                for _, part in pairs(plant:GetChildren()) do
+                    part.Transparency = 1
+                end
+            elseif distance < 50 then
+                if plant.PrimaryPart.Transparency == 1 then
+                    for _, part in pairs(plant:GetChildren()) do
+                        if part.Name == "RigidBody" then
+                            print("rigid body")
+                        else
+                            part.Transparency = 0
+                        end
+                    end
+                end
+            end 
+        end
+    end
+end
 
 print("item has been required")
 
