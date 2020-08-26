@@ -56,14 +56,41 @@ function Animals.AnimalBehavior(behavior, animal, player_body)
     
     if behavior == "Run" then
         local orientation_frame = CFrame.new(animal_body.CFrame.Position, Vector3.new(player_body.Position.X, animal_body.CFrame.Position.Y, player_body.Position.Z)) * CFrame.Angles(0, math.rad(180), 0)
-        --local first_cframe = CFrame.new(animal_body.CFrame.Position, player_body.Position)
-        --print(player_body.Orientation)
-        --local second_cframe = CFrame.new(player_body.Position,animal_body.CFrame.Position)
-        --local rotated_cframe = animal_body.CFrame * CFrame.Angles(-math.rad(animal_body.Orientation.X),math.rad(player_body.Orientation.Y-animal_body.Orientation.Y),-math.rad(animal_body.Orientation.Z))
-        --animal:SetPrimaryPartCFrame(rotated_cframe)
-        --animal_body.Velocity = animal_body.Velocity + (-first_cframe.LookVector * 20)
         animal:SetPrimaryPartCFrame(orientation_frame)
         animal_body.Velocity = animal_body.CFrame.LookVector * 15
+    elseif behavior == "Idle" then
+        local turn_chance = math.random(0,1000)
+        local walk_chance = math.random(0,1000)
+
+        local turn_cframe = animal_body.CFrame * CFrame.Angles(-math.rad(animal_body.Orientation.X),math.rad(1),-math.rad(animal_body.Orientation.Z))
+        if turn_chance > 999 then
+                --print("turn")
+            if turn == false then
+                turn = true
+            else
+                turn = false 
+            end
+                
+                
+        end
+
+        if walk_chance > 99 then
+            if walk == true then
+                walk = false
+            else
+                walk = true
+            end
+                
+        end
+
+
+        if walk then
+            animal_body.Velocity = animal_body.Velocity + (animal_body.CFrame.LookVector * .5)
+        end
+
+        if turn then
+            animal:SetPrimaryPartCFrame(turn_cframe)
+        end
     end
 end
 
@@ -81,41 +108,9 @@ function Animals.UpdateAnimals(player_list)
             animal:SetPrimaryPartCFrame(update_cframe)
             --print(animal_distance)
             if animal_distance < 10 then
-
                 Animals.AnimalBehavior("Run", animal, player_body)
-            else
-                local turn_chance = math.random(0,1000)
-                local walk_chance = math.random(0,1000)
-
-                local turn_cframe = animal_body.CFrame * CFrame.Angles(-math.rad(animal_body.Orientation.X),math.rad(1),-math.rad(animal_body.Orientation.Z))
-                if turn_chance > 999 then
-                        --print("turn")
-                    if turn == false then
-                        turn = true
-                    else
-                        turn = false 
-                    end
-                        
-                        
-                end
-
-                if walk_chance > 99 then
-                    if walk == true then
-                        walk = false
-                    else
-                        walk = true
-                    end
-                        
-                end
-
-
-                if walk then
-                    animal_body.Velocity = animal_body.Velocity + (animal_body.CFrame.LookVector * .5)
-                end
-
-                if turn then
-                    animal:SetPrimaryPartCFrame(turn_cframe)
-                end
+            elseif animal_distance < 30 then
+                Animals.AnimalBehavior("Idle", animal, player_body)
             end
         end
     end

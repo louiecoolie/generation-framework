@@ -20,13 +20,28 @@ function UpdateArea.Scan(player_character, scan_size, scan_whitelist)
 
 end
 
-function UpdateArea.Search(player_character, scan_search)
-    for _, item in pairs(scan_search) do
-        if item:FindFirstChild("spawn_value") then
-            print(item:FindFirstChild("spawn_value").Value)
+
+function UpdateArea.UpdateAnimalRender(player_character, animal_list)
+    for _, animal in pairs(animal_list) do
+        local distance = (player_character.PrimaryPart.Position - animal.PrimaryPart.Position).Magnitude
+        if distance > 50 then
+            for _, part in pairs(animal:GetChildren()) do
+                part.Transparency = 1
+            end
+        elseif distance < 50 then
+            if animal.PrimaryPart.Transparency == 1 then
+                for _, part in pairs(animal:GetChildren()) do
+                    if part.Name == "RigidBody" then
+                        print("rigid body")
+                    else
+                        part.Transparency = 0
+                    end
+                end
+            end
         end
     end
 end
+
 
 print("item has been required")
 

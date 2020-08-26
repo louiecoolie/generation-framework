@@ -55,7 +55,19 @@ end
 function init.EstablishConnections()
 	local spawn_points = workspace:WaitForChild("points_container", 60):GetChildren()
 	
-	connections.Scanner = RunService.Heartbeat:Connect(function()
+
+	connections.UpdateAnimalRender = RunService.Heartbeat:Connect(function()
+		local animals = workspace:FindFirstChild("animals_container")
+
+		if animals and char then
+			Modules["UpdateArea"].UpdateAnimalRender(char, animals:GetChildren())
+		end
+	
+
+	end)
+
+
+	connections.ScanSpawns = RunService.Heartbeat:Connect(function()
 
 		local Scan = Modules["UpdateArea"].Scan(char, 20, spawn_points)
 	
@@ -83,7 +95,5 @@ end
 
 init.StartClient()
 
-plr.CharacterAdded:Connect(function()
-	init.StartClient()
-end)
+
 

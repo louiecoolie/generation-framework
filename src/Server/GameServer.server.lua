@@ -24,7 +24,11 @@ local init = {}
 local connections = {}
 
 function init.GenerateServer()
-    Modules["Generate"].AnimalSpawns(Vector3.new(0,4,0), 30, 10, 0, "Doe")
+    Modules["Generate"].AnimalSpawns(Vector3.new(0,4,0), 30, 20, 0, "Doe")
+    Modules["Generate"].AnimalSpawns(Vector3.new(0,4,30), 30, 20, 0, "Doe")
+    Modules["Generate"].AnimalSpawns(Vector3.new(30,4,0), 30, 20, 0, "Doe")
+    Modules["Generate"].AnimalSpawns(Vector3.new(-30,4,0), 30, 20, 0, "Doe")
+    Modules["Generate"].AnimalSpawns(Vector3.new(0,4,-30), 30, 20, 0, "Doe")
 end
 
 function init:CreateConnections()
