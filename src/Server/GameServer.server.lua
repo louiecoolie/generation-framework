@@ -29,7 +29,9 @@ function init.GenerateServer()
     Modules["Generate"].AnimalSpawns(Vector3.new(30,4,0), 30, 20, 0, "Doe")
     Modules["Generate"].AnimalSpawns(Vector3.new(-30,4,0), 30, 20, 0, "Doe")
     Modules["Generate"].AnimalSpawns(Vector3.new(0,4,-30), 30, 20, 0, "Doe")
-    Modules["Generate"].AnimalSpawns(Vector3.new(0,4,0), 30, 20, 0, nil, "Tree")
+    Modules["Generate"].AnimalSpawns(Vector3.new(0,4,0), 30, 20, 0, nil, "Oak")
+    Modules["Generate"].AnimalSpawns(Vector3.new(0,4,30), 30, 20, 0, nil, "Oak")
+    Modules["Generate"].AnimalSpawns(Vector3.new(0,4,-30), 30, 20, 0, nil, "Oak")
 end
 
 function init:CreateConnections()

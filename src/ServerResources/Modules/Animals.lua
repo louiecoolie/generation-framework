@@ -84,17 +84,19 @@ function Animals.UpdateAnimals(player_list)
    for _, object in pairs(generated_animals) do
         local animal = object
         for _, player in pairs(player_list) do
-            local player_body = player.PrimaryPart
-            
-            local animal_distance = (player_body.Position - animal.PrimaryPart.Position).Magnitude
-            local animal_body = animal.PrimaryPart
-            local update_cframe = animal_body.CFrame * CFrame.Angles(-math.rad(animal_body.Orientation.X),0,-math.rad(animal_body.Orientation.Z))
-            animal:SetPrimaryPartCFrame(update_cframe)
-            --print(animal_distance)
-            if animal_distance < 10 then
-                Animals.AnimalBehavior("Run", animal, player_body)
-            elseif animal_distance < 30 then
-                Animals.AnimalBehavior("Idle", animal, player_body)
+            if player then
+                local player_body = player.PrimaryPart
+                
+                local animal_distance = (player_body.Position - animal.PrimaryPart.Position).Magnitude
+                local animal_body = animal.PrimaryPart
+                local update_cframe = animal_body.CFrame * CFrame.Angles(-math.rad(animal_body.Orientation.X),0,-math.rad(animal_body.Orientation.Z))
+                animal:SetPrimaryPartCFrame(update_cframe)
+                --print(animal_distance)
+                if animal_distance < 10 then
+                    Animals.AnimalBehavior("Run", animal, player_body)
+                elseif animal_distance < 30 then
+                    Animals.AnimalBehavior("Idle", animal, player_body)
+                end
             end
         end
     end

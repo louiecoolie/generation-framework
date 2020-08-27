@@ -60,8 +60,8 @@ function UpdateArea.UpdatePlantRender(player_character, plant_list)
             elseif distance < 50 then
                 if plant.PrimaryPart.Transparency == 1 then
                     for _, part in pairs(plant:GetChildren()) do
-                        if part.Name == "RigidBody" then
-                            print("rigid body")
+                        if part.Name == "leaf" then
+                            part.Transparency = 0.5
                         else
                             part.Transparency = 0
                         end
