@@ -18,7 +18,7 @@ function Animals:CreateNew(animal_name, animal_body)
 end
 
 function Animals.Spawn(animal, position, player, database, spawn_object)
-    local generation_number = spawn_object:FindFirstChild("spawn_number")
+    local generation_number = spawn_object:FindFirstChild("spawn_number").Value
 
     if generated_animals[generation_number] then 
         print("Animal has been printed in server!")
@@ -81,23 +81,27 @@ end
 
 function Animals.UpdateAnimals(player_list)
     --print(animal_list[animal_index])
-   for _, object in pairs(generated_animals) do
+   for index, object in pairs(generated_animals) do
         local animal = object
-        for _, player in pairs(player_list) do
-            if player then
-                local player_body = player.PrimaryPart
-                
-                local animal_distance = (player_body.Position - animal.PrimaryPart.Position).Magnitude
-                local animal_body = animal.PrimaryPart
-                local update_cframe = animal_body.CFrame * CFrame.Angles(-math.rad(animal_body.Orientation.X),0,-math.rad(animal_body.Orientation.Z))
-                animal:SetPrimaryPartCFrame(update_cframe)
-                --print(animal_distance)
-                if animal_distance < 10 then
-                    Animals.AnimalBehavior("Run", animal, player_body)
-                elseif animal_distance < 30 then
-                    Animals.AnimalBehavior("Idle", animal, player_body)
+        if animal.PrimaryPart then
+            for _, player in pairs(player_list) do
+                if player then
+                    local player_body = player.PrimaryPart
+                    
+                    local animal_distance = (player_body.Position - animal.PrimaryPart.Position).Magnitude
+                    local animal_body = animal.PrimaryPart
+                    local update_cframe = animal_body.CFrame * CFrame.Angles(-math.rad(animal_body.Orientation.X),0,-math.rad(animal_body.Orientation.Z))
+                    animal:SetPrimaryPartCFrame(update_cframe)
+                    --print(animal_distance)
+                    if animal_distance < 10 then
+                        Animals.AnimalBehavior("Run", animal, player_body)
+                    elseif animal_distance < 30 then
+                        Animals.AnimalBehavior("Idle", animal, player_body)
+                    end
                 end
             end
+        else
+            table.remove(generated_animals, index)
         end
     end
 end

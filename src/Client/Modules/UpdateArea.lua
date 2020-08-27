@@ -29,15 +29,15 @@ function UpdateArea.UpdateAnimalRender(player_character, animal_list)
 
             if distance > 50 then
                 for _, part in pairs(animal:GetChildren()) do
-                    part.Transparency = 1
+                    part.Transparency = (part.Transparency >= 1 and 1) or (part.Transparency + 0.5)
                 end
             elseif distance < 50 then
-                if animal.PrimaryPart.Transparency == 1 then
+                if animal.PrimaryPart.Transparency <= 1 then
                     for _, part in pairs(animal:GetChildren()) do
                         if part.Name == "RigidBody" then
                             print("rigid body")
                         else
-                            part.Transparency = 0
+                            part.Transparency = (part.Transparency == 0 and 0) or (part.Transparency - 0.1)
                         end
                     end
                 end
@@ -55,15 +55,15 @@ function UpdateArea.UpdatePlantRender(player_character, plant_list)
 
             if distance > 50 then
                 for _, part in pairs(plant:GetChildren()) do
-                    part.Transparency = 1
+                    part.Transparency = (part.Transparency >= 1 and 1) or (part.Transparency + 0.5)
                 end
             elseif distance < 50 then
-                if plant.PrimaryPart.Transparency == 1 then
+                if plant.PrimaryPart.Transparency <= 1 then
                     for _, part in pairs(plant:GetChildren()) do
                         if part.Name == "leaf" then
-                            part.Transparency = 0.5
+                            part.Transparency = (part.Transparency >= 0.5 and 0.5) or (part.Transparency - 0.1)
                         else
-                            part.Transparency = 0
+                            part.Transparency = (part.Transparency == 0 and 0) or (part.Transparency - 0.1)
                         end
                     end
                 end

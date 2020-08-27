@@ -26,13 +26,13 @@ function CreateTree(plant)
             leaf.Size = Vector3.new(10,10,10)
             leaf.Transparency = 0.5
             leaf.CFrame = leaf.CFrame * CFrame.new(0, leaf.Size.Y/2, 0)
+            leaf.CanCollide = false
             --leaf.CFrame * CFrame.new(0, leaf.Size.Y/3, 0)*
             leaf.Parent = plant
             leaf.Name = "leaf"
             branch.Parent = plant 
         end
     end
-
 end
 
 
@@ -50,7 +50,7 @@ function Plants.Grow(plant, position, spawn_object)
         if plant then
 
             local plant_request = plant:Clone()
-            local plant_scan = Ray.new(position.Position, -position.UpVector * 10)
+            local plant_scan = Ray.new(position.Position, -position.UpVector * 100)
             local ignore_list = {}
             for _, animal in pairs(workspace:FindFirstChild("animals_container"):GetChildren()) do
                 table.insert(ignore_list, animal)
