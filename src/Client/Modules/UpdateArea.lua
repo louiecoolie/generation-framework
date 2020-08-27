@@ -1,5 +1,8 @@
 local UpdateArea = {}
 
+local TweenService = game:GetService("TweenService")
+
+
 function UpdateArea.Scan(player_character, scan_size, scan_whitelist)
     local player_position = player_character.PrimaryPart.Position
     local region_scan = 
@@ -25,13 +28,17 @@ function UpdateArea.UpdateLoad(object, load_condition)
         for _, part in pairs(object:GetChildren()) do
             if part:IsA("BasePart") then
                 if part.Name == "leaf" then
-                    --part.Transparency = (part.Transparency >= 0.5 and 0.5) or (part.Transparency - 0.1)
-                    part.Transparency = 0.5
+                    --part.Transparency = (part.Transparency >= 0.5 and 0.5) or (part.Transparency - 
+                    local tween = TweenService:Create(part, TweenInfo.new(2), {Transparency = 0.5})
+                    tween:Play()
+                    --part.Transparency = 0.5
                 elseif part.Name == "RigidBody" then
                 
                 else
                             -- part.Transparency = (part.Transparency == 0 and 0) or (part.Transparency - 0.1)
-                    part.Transparency = 0
+                    local tween = TweenService:Create(part, TweenInfo.new(2), {Transparency = 0})
+                    tween:Play()
+                    --part.Transparency = 0
                 end
             end
         end
@@ -39,7 +46,9 @@ function UpdateArea.UpdateLoad(object, load_condition)
         for _, part in pairs(object:GetChildren()) do
             if part:IsA("BasePart") then
             --part.Transparency = (part.Transparency >= 1 and 1) or (part.Transparency + 0.5)
-                part.Transparency = 1
+            local tween = TweenService:Create(part, TweenInfo.new(2), {Transparency = 1})
+            tween:Play()
+                --part.Transparency = 1
             end
         end
     end
