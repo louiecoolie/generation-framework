@@ -55,11 +55,29 @@ end
 function init.EstablishConnections()
 	local spawn_points = workspace:WaitForChild("points_container", 60):GetChildren()
 	
+	connections.CheckPlantLoadCondition = workspace:FindFirstChild("plants_container").ChildAdded:Connect(function(plant)
+		print(plant)
+		local load_bool = plant:WaitForChild("load_bool", 60)
+		if load_bool then
+			load_bool:GetPropertyChangedSignal("Value"):Connect(function(change)
+				Modules["UpdateArea"].UpdateLoad(plant, load_bool.Value)
+			end) 
+		end
+	end)
+
+	connections.CheckAnimalLoadCondition = workspace:FindFirstChild("animals_container").ChildAdded:Connect(function(animal)
+		local load_bool = animal:WaitForChild("load_bool", 60)
+		if load_bool then
+			load_bool:GetPropertyChangedSignal("Value"):Connect(function(change)
+				Modules["UpdateArea"].UpdateLoad(animal, load_bool.Value)
+			end) 
+		end
+	end)
 
 	connections.UpdateAnimalRender = RunService.Heartbeat:Connect(function()
 		local animals = workspace:FindFirstChild("animals_container")
 		local plants = workspace:FindFirstChild("plants_container")
-
+		debug.profilebegin("Load Procedure")
 		if plants and char then
 			Modules["UpdateArea"].UpdatePlantRender(char, plants:GetChildren())
 		end
@@ -67,7 +85,7 @@ function init.EstablishConnections()
 		if animals and char then
 			Modules["UpdateArea"].UpdateAnimalRender(char, animals:GetChildren())
 		end
-	
+		debug.profileend()
 
 	end)
 

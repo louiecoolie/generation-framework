@@ -50,6 +50,9 @@ function Plants.Grow(plant, position, spawn_object)
         if plant then
 
             local plant_request = plant:Clone()
+            local load_bool = Instance.new("BoolValue", plant_request)
+            load_bool.Name = "load_bool"
+            load_bool.Value = true
             local plant_scan = Ray.new(position.Position, -position.UpVector * 100)
             local ignore_list = {}
             for _, animal in pairs(workspace:FindFirstChild("animals_container"):GetChildren()) do
@@ -67,6 +70,10 @@ function Plants.Grow(plant, position, spawn_object)
 
             CreateTree(plant_request)
 
+
+            load_bool.Changed:Connect(function(value)
+                print(value)
+            end)
             generated_plants[generation_number] = plant_request
         end
     end

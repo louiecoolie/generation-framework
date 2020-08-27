@@ -24,9 +24,15 @@ function Animals.Spawn(animal, position, player, database, spawn_object)
         print("Animal has been printed in server!")
     else
         if animal then
+
+
             local spawn = Animals:CreateNew(animal.name, animal)
             spawn.Body:SetPrimaryPartCFrame(position)
             spawn.Body.Parent = animals_container
+            
+            local load_bool = Instance.new("BoolValue", spawn.Body)
+            load_bool.Name = "load_bool"
+            load_bool.Value = true
 
             generated_animals[generation_number] = spawn.Body
         end
