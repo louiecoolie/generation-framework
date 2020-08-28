@@ -28,17 +28,13 @@ function UpdateArea.UpdateLoad(object, load_condition)
         for _, part in pairs(object:GetChildren()) do
             if part:IsA("BasePart") then
                 if part.Name == "leaf" then
-                    --part.Transparency = (part.Transparency >= 0.5 and 0.5) or (part.Transparency - 
                     local tween = TweenService:Create(part, TweenInfo.new(2), {Transparency = 0.5})
                     tween:Play()
-                    --part.Transparency = 0.5
                 elseif part.Name == "RigidBody" then
                 
                 else
-                            -- part.Transparency = (part.Transparency == 0 and 0) or (part.Transparency - 0.1)
                     local tween = TweenService:Create(part, TweenInfo.new(2), {Transparency = 0})
                     tween:Play()
-                    --part.Transparency = 0
                 end
             end
         end
@@ -63,23 +59,9 @@ function UpdateArea.UpdateAnimalRender(player_character, animal_list)
             local load_bool = animal:FindFirstChild("load_bool")
             if distance > 50 then
                 load_bool.Value = false
-               -- for _, part in pairs(animal:GetChildren()) do
-                    --part.Transparency = (part.Transparency >= 1 and 1) or (part.Transparency + 0.5)
-                    --part.Transparency = 1
-                    --part.Anchored = true
-               -- end
             elseif distance < 50 then
                 if animal.PrimaryPart.Transparency <= 1 then
                     load_bool.Value = true
-                    --for _, part in pairs(animal:GetChildren()) do
-                        --if part.Name == "RigidBody" then
-                        
-                        --else
-                           -- part.Transparency = (part.Transparency == 0 and 0) or (part.Transparency - 0.1)
-                            --part.Transparency = 0
-                            --part.Anchored = false
-                        --end
-                    --end
                 end
             end
         end
