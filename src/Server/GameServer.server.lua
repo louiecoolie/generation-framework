@@ -37,6 +37,15 @@ function init:CreateConnections()
 end
 
 function init:EstablishConnections()
+    --connections.CheckAnimalOwnership = workspace:FindFirstChild("animals_container").ChildAdded:Connect(function(animal)
+		--local owner_value = animal:WaitForChild("owner_value", 60)
+		--if owner_value then
+			--owner_value:GetPropertyChangedSignal("Value"):Connect(function(change)
+			--	Modules["Animals"].UpdateOwnership(animal, owner_value.Value)
+			--end) 
+		--end
+	--end)
+
     connections.Animals = self.AnimalRequest.OnServerEvent:Connect(function(player, animal, position, spawn_object)
             Modules["Animals"].Spawn(Assets.Animal:FindFirstChild(animal), position, player, Database.Player, spawn_object)
             

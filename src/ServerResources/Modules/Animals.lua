@@ -8,6 +8,11 @@ local generated_animals = {}
 local turn = nil
 local walk = nil
 
+function Animals.UpdateOwnership(animal, player)
+    --animal.PrimaryPart:SetNetworkOwner(player)
+    print(animal, player)
+end
+
 function Animals:CreateNew(animal_name, animal_body)
 
     self.Name = animal_name
@@ -29,11 +34,13 @@ function Animals.Spawn(animal, position, player, database, spawn_object)
             local spawn = Animals:CreateNew(animal.name, animal)
             spawn.Body:SetPrimaryPartCFrame(position)
             spawn.Body.Parent = animals_container
-            
+
             local load_bool = Instance.new("BoolValue", spawn.Body)
             load_bool.Name = "load_bool"
             load_bool.Value = true
-
+            local owner_value = Instance.new("ObjectValue", spawn.Body)
+            owner_value.Name = "owner_value"
+            owner_value.Value = nil
             generated_animals[generation_number] = spawn.Body
         end
     end
