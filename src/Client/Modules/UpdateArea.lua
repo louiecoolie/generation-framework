@@ -57,11 +57,13 @@ function UpdateArea.UpdateAnimalRender(player_character, animal_list)
         if player_character.PrimaryPart and animal.PrimaryPart then
             local distance = (player_character.PrimaryPart.Position - animal.PrimaryPart.Position).Magnitude
             local load_bool = animal:FindFirstChild("load_bool")
-            if distance > 50 then
-                load_bool.Value = false
-            elseif distance < 50 then
-                if animal.PrimaryPart.Transparency <= 1 then
-                    load_bool.Value = true
+            if load_bool then
+                if distance > 100 then
+                    load_bool.Value = false
+                elseif distance < 100 then
+                    if animal.PrimaryPart.Transparency <= 1 then
+                        load_bool.Value = true
+                    end
                 end
             end
         end
@@ -75,24 +77,26 @@ function UpdateArea.UpdatePlantRender(player_character, plant_list)
         if player_character.PrimaryPart and plant.PrimaryPart then
             local distance = (player_character.PrimaryPart.Position - plant.PrimaryPart.Position).Magnitude
             local load_bool = plant:FindFirstChild("load_bool")
-            if distance > 50 then
-                --for _, part in pairs(plant:GetChildren()) do
-                    --part.Transparency = (part.Transparency >= 1 and 1) or (part.Transparency + 0.5)
-                    --part.Transparency = 1
-                --end
-                load_bool.Value = false
-            elseif distance < 50 then
-                if plant.PrimaryPart.Transparency <= 1 then
-                    load_bool.Value = true
+            if load_bool then
+                if distance > 100 then
                     --for _, part in pairs(plant:GetChildren()) do
-                        --if part.Name == "leaf" then
-                           -- part.Transparency = (part.Transparency >= 0.5 and 0.5) or (part.Transparency - 0.1)
-                            --part.Transparency = 0.5
-                        --else
-                           -- part.Transparency = (part.Transparency == 0 and 0) or (part.Transparency - 0.1)
-                            --part.Transparency = 0
-                        --end
-                   -- end
+                        --part.Transparency = (part.Transparency >= 1 and 1) or (part.Transparency + 0.5)
+                        --part.Transparency = 1
+                    --end
+                    load_bool.Value = false
+                elseif distance < 100 then
+                    if plant.PrimaryPart.Transparency <= 1 then
+                        load_bool.Value = true
+                        --for _, part in pairs(plant:GetChildren()) do
+                            --if part.Name == "leaf" then
+                            -- part.Transparency = (part.Transparency >= 0.5 and 0.5) or (part.Transparency - 0.1)
+                                --part.Transparency = 0.5
+                            --else
+                            -- part.Transparency = (part.Transparency == 0 and 0) or (part.Transparency - 0.1)
+                                --part.Transparency = 0
+                            --end
+                    -- end
+                    end
                 end
             end 
         end

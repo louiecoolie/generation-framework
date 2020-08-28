@@ -59,19 +59,51 @@ function Generate.Spawns(region_center, region_radius, spawn_points, spawn_gap, 
     end
 end
 
+function Generate.Ocean(region_center, region_radius, region_height)
+    local water = Region3.new(Vector3.new(-region_radius, -region_height, -region_radius),Vector3.new(region_radius, 0, region_radius))
+    water:ExpandToGrid(4)
+    workspace:WaitForChild("Terrain"):FillRegion(water, 4, Enum.Material.Water)
+    local sand = Region3.new(Vector3.new(-region_radius, -region_height*2, -region_radius),Vector3.new(region_radius, -region_height, region_radius))
+    sand:ExpandToGrid(4)
+    workspace:WaitForChild("Terrain"):FillRegion(sand, 4, Enum.Material.Sand)
+end
 
 function Generate.Island(region_center, region_radius, region_height, complexity)
     local island_object = Instance.new("Model")
     local island_center = Instance.new("Part")
     island_center.Position = region_center
-    island_center.Size = Vector3.new(region_radius, region_height, region_radius)
+    island_center.Size = Vector3.new(region_radius, region_height*1.5, region_radius)
     island_center.Anchored = true
+    island_center.Color = Color3.fromRGB(82, 78, 76)
+    local grass = island_center:Clone()
+    grass.Size = Vector3.new(grass.Size.X, 1, grass.Size.Z)
+    grass.CFrame = CFrame.new(island_center.CFrame.Position)*CFrame.new(0, (island_center.Size.Y/2)+0.5,0)
+    grass.Anchored = true
+    grass.Color = Color3.fromRGB(94, 139, 100)
+    grass.Parent = island_object
     island_center.Parent = island_object
     for i = 1, complexity do
         local island_segment = Instance.new("Part")
-        island_segment.Size = Vector3.new(region_radius/2, region_height/1.2, region_radius/2)
-        island_segment.CFrame = CFrame.new(island_center.Position)*CFrame.Angles(0, math.rad(90)*i,0)*CFrame.new(region_radius/2,0,0)
+        island_segment.Size = Vector3.new(region_radius*1.5, (region_height/1.5)-i, region_radius*1.5)
+        island_segment.CFrame = CFrame.new(island_center.Position)*CFrame.Angles(0, math.rad(90)*i,0)*CFrame.new((region_radius/2)+i,0,i)
         island_segment.Anchored = true
+        island_segment.Color = Color3.fromRGB(82, 78, 76)
+
+ 
+        local sand_segment = Instance.new("Part")
+        sand_segment.Size = Vector3.new(region_radius*1.2, (region_height/1.5)-i, region_radius*2)
+        sand_segment.CFrame = CFrame.new(island_segment.Position)*CFrame.Angles(0, math.rad(90)*i,0)*CFrame.new((region_radius/2)+i,0,i)*CFrame.new(0,-5,0)
+        sand_segment.Anchored = true
+        sand_segment.Color = Color3.fromRGB(198, 201, 155)
+
+        local grass_segment = island_segment:Clone()
+        grass_segment.Size = Vector3.new(grass_segment.Size.X, 1, grass_segment.Size.Z)
+        grass_segment.CFrame = CFrame.new(island_segment.CFrame.Position)*CFrame.new(0, (island_segment.Size.Y/2)+0.5,0)
+        grass_segment.Anchored = true
+        grass_segment.Color = Color3.fromRGB(94, 139, 100)
+
+        sand_segment.Parent = island_object
+        grass_segment.Parent = island_object
         island_segment.Parent = island_object
     end
 

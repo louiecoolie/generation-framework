@@ -24,7 +24,8 @@ local init = {}
 local connections = {}
 
 function init.GenerateServer()
-    Modules["Generate"].Island(Vector3.new(0,0,0), 50, 10, 4)
+    Modules["Generate"].Ocean(Vector3.new(0,0,0), 2048, 8)
+    Modules["Generate"].Island(Vector3.new(0,0,0), 50, 15, 4)
     Modules["Generate"].Spawns(Vector3.new(0,4,0), 30, 20, 0, "Doe")
 
 
