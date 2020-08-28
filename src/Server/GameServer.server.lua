@@ -33,6 +33,7 @@ function init.GenerateServer()
 end
 
 function init:CreateConnections()
+    self.ForageRequest = Modules["Request"].RemoteEvent("forage_request", Events)
     self.PlantRequest = Modules["Request"].RemoteEvent("plant_request", Events)
 	self.AnimalRequest = Modules["Request"].RemoteEvent("animal_request", Events) --print(UpdateArea.Scan(char))
 end
@@ -45,7 +46,11 @@ function init:EstablishConnections()
 			--	Modules["Animals"].UpdateOwnership(animal, owner_value.Value)
 			--end) 
 		--end
-	--end)
+    --end)
+    connections.ForageRequest = self.ForageRequest.OnServerEvent:Connect(function(player, forage_ray)
+        --print(player, forage_position)
+        Modules["Forage"].DetectForage(forage_ray)
+    end)
 
     connections.Animals = self.AnimalRequest.OnServerEvent:Connect(function(player, animal, position, spawn_object)
             Modules["Animals"].Spawn(Assets.Animal:FindFirstChild(animal), position, player, Database.Player, spawn_object)

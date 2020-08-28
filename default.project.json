@@ -34,6 +34,10 @@
 
           "$path": "src/Client/Controllers"
         },
+        "Systems": {
+
+          "$path": "src/Client/Systems"
+        },
         "Modules": {
           "$path": "src/Client/Modules"
         }

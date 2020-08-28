@@ -3,9 +3,11 @@ local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local ClientModules = script.Parent.Parent:WaitForChild("Modules", 60)
 local ClientEvents = game:GetService("ReplicatedStorage"):WaitForChild("Events", 60)
+local ClientControllers =  script.Parent.Parent:WaitForChild("Controllers", 60)
 
 local Events = {}
 local Modules = {}
+local Controllers = {}
 -- event declarations
 for _, event in ipairs(ClientEvents:GetChildren()) do
     ClientEvents:WaitForChild(event.Name, 5)
@@ -27,6 +29,15 @@ for _, module in ipairs(ClientModules:GetChildren()) do
 
 end
 
+for _, controller in ipairs(ClientControllers:GetChildren()) do
+    ClientControllers:WaitForChild(controller.Name, 5)
+ 
+end
+
+for _, controller in ipairs(ClientControllers:GetChildren()) do
+	Controllers[controller.Name] = require(controller)
+end
+
 -- player data
 local plr = Players.LocalPlayer
 local char = plr.Character or plr.CharacterAdded:wait()
@@ -38,10 +49,12 @@ local init = {}
 local connections = {}
 
 function init.GenerateClient()
-
+	Modules["Tool"].GetEvents(Events)
 end
 
 function init.CreateConnections()
+
+	Controllers["Keyboard"].Bind("forage", Modules["Tool"].Forage, false, Enum.UserInputType.MouseButton1)
 end
 
 function init.Disconnect()
@@ -119,7 +132,7 @@ end
 
 function init.StartClient()
     --init.GenerateClient()
-    --init.CreateConnections()
+    init.CreateConnections()
     init.EstablishConnections()
 end
 
