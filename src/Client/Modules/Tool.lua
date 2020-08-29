@@ -26,9 +26,12 @@ function Tool.ToggleEquip(action, input_state, para)
 end
 
 function Tool.Forage(action, input_state, input_object)
-    local forage_ray =  workspace.Camera:ScreenPointToRay(input_object.Position.X, input_object.Position.Y)
+    if input_state == Enum.UserInputState.Begin then
 
-    Events["forage_request"]:FireServer(forage_ray)
+        local forage_ray =  workspace.Camera:ScreenPointToRay(input_object.Position.X, input_object.Position.Y)
+
+        Events["forage_request"]:FireServer(forage_ray)
+    end
 end
 
 

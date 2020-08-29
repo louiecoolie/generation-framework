@@ -73,7 +73,7 @@ function Plants.Grow(plant, position, spawn_object)
             table.insert(ignore_list,plant_request)
     
             local _, plant_position = workspace:FindPartOnRayWithIgnoreList(plant_scan, ignore_list)
-            print(plant_position, position.Position)
+            
             local plant_cframe = CFrame.new(plant_position.X, plant_position.Y + (plant_request.PrimaryPart.Size.Y/2), plant_position.Z)
             plant_request:SetPrimaryPartCFrame(plant_cframe)
             plant_request.PrimaryPart.Anchored = true
@@ -81,10 +81,6 @@ function Plants.Grow(plant, position, spawn_object)
 
             CreateTree(plant_request)
 
-
-            load_bool.Changed:Connect(function(value)
-                print(value)
-            end)
             generated_plants[generation_number] = plant_request
         end
     end

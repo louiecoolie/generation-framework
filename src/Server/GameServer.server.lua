@@ -10,14 +10,14 @@ local Database = game:GetService("ReplicatedStorage"):WaitForChild("Database", 6
 -- wait for modules to load
 for _, module in ipairs(ServerModules:GetChildren()) do
     ServerModules:WaitForChild(module.Name, 30)
-    print(module.Name)
+    
 end
 
 local Modules = {}
 -- require/initialize modules
 for _, module in ipairs(ServerModules:GetChildren()) do
         Modules[module.Name] = require(module)
-        print(module.Name)
+       
 end
 
 local init = {}
@@ -27,13 +27,12 @@ function init.GenerateServer()
     Modules["Generate"].Ocean(Vector3.new(0,0,0), 2048, 8)
     Modules["Generate"].Island(Vector3.new(0,0,0), 50, 15, 4)
     Modules["Generate"].Spawns(Vector3.new(0,4,0), 30, 20, 0, "Doe")
-
-
-    Modules["Generate"].Spawns(Vector3.new(0,20,-30), 30, 20, 0, nil, "Oak")
+    Modules["Generate"].Spawns(Vector3.new(0,20,-30), 30, 5, 0, nil, "Oak")
 end
 
 function init:CreateConnections()
     self.ForageRequest = Modules["Request"].RemoteEvent("forage_request", Events)
+    self.InventoryUpdate = Modules["Request"].RemoteEvent("inventory_update", Events)
     self.PlantRequest = Modules["Request"].RemoteEvent("plant_request", Events)
 	self.AnimalRequest = Modules["Request"].RemoteEvent("animal_request", Events) --print(UpdateArea.Scan(char))
 end
@@ -49,7 +48,7 @@ function init:EstablishConnections()
     --end)
     connections.ForageRequest = self.ForageRequest.OnServerEvent:Connect(function(player, forage_ray)
         --print(player, forage_position)
-        Modules["Forage"].DetectForage(forage_ray)
+        Modules["Forage"].DetectForage(player, forage_ray)
     end)
 
     connections.Animals = self.AnimalRequest.OnServerEvent:Connect(function(player, animal, position, spawn_object)

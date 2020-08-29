@@ -68,8 +68,13 @@ end
 function init.EstablishConnections()
 	local spawn_points = workspace:WaitForChild("points_container", 60):GetChildren()
 	
+	connections.ReceiveInventoryUpdate = Events["inventory_update"].OnClientEvent:Connect(function(number, object)
+		print("hello", number, object)
+		
+	end)
+
 	connections.CheckPlantLoadCondition = workspace:FindFirstChild("plants_container").ChildAdded:Connect(function(plant)
-		print(plant)
+		
 		local load_bool = plant:WaitForChild("load_bool", 60)
 		if load_bool then
 			load_bool:GetPropertyChangedSignal("Value"):Connect(function(change)
@@ -115,13 +120,13 @@ function init.EstablishConnections()
 
 				if request_value.Value == "nil" then
 					request_value.Value = "true"
-					--print(spawn_value.Value .. " " .. network_owner.Value)
+				
 					if spawn_value.Value then
 						Events["animal_request"]:FireServer(spawn_value.Value, object.CFrame, object)
 					end
 					if plant_value.Value then
 						Events["plant_request"]:FireServer(plant_value.Value, object.CFrame, object)
-						print(plant_value.Value)
+					
 					end
 				end
 			end
