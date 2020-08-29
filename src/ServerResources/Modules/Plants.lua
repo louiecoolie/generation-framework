@@ -7,7 +7,7 @@ plants_container.Name = "plants_container"
 local generated_plants = {}
 
 function CreateTree(plant)
-    local forage_value = Instance.new("BoolValue", plant)
+    local forage_value = Instance.new("BoolValue")
     forage_value.Name = "forage_value"
     forage_value.Value = true
     plant:SetPrimaryPartCFrame((plant.PrimaryPart.CFrame*CFrame.Angles(math.rad(math.random(-15,15)),0,0)*CFrame.new(0,-1,0)))
@@ -36,6 +36,14 @@ function CreateTree(plant)
             branch.Parent = plant 
         end
     end
+
+    for _, part in pairs(plant:GetChildren()) do
+        if part:IsA("BasePart") then
+            local forage = forage_value:Clone()
+            forage.Parent = part
+        end
+    end
+
 end
 
 
