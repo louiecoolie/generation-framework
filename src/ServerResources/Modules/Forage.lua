@@ -9,7 +9,11 @@ end
 
 function Forage.DetectForage(forage_ray)
     local forage, forage_location = GetMousePoint(forage_ray)
-    forage.Anchored = false
+    if forage.Parent:FindFirstChild("forage_value") then
+        forage.Size = Vector3.new(forage.Size.X/2, forage.Size.Y/2, forage.Size.Z/2)
+        forage.CanCollide = true
+        forage.Anchored = false
+    end
     print(forage, forage_location)
 end
 

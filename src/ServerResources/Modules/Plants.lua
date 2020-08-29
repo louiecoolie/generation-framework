@@ -7,6 +7,9 @@ plants_container.Name = "plants_container"
 local generated_plants = {}
 
 function CreateTree(plant)
+    local forage_value = Instance.new("BoolValue", plant)
+    forage_value.Name = "forage_value"
+    forage_value.Value = true
     plant:SetPrimaryPartCFrame((plant.PrimaryPart.CFrame*CFrame.Angles(math.rad(math.random(-15,15)),0,0)*CFrame.new(0,-1,0)))
     local limbs = {}
     for i = 1,6,2 do
