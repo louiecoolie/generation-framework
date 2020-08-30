@@ -39,27 +39,29 @@ end
 
 function Forage.DetectForage(player, forage_ray)
     local forage, forage_location = GetMousePoint(forage_ray)
-    if forage:FindFirstChild("forage_value") then
-        local forageable = forage:FindFirstChild("forage_value").Value
-        if forageable then
-            forage.Size = Vector3.new(forage.Size.X/2, forage.Size.Y/2, forage.Size.Z/2)
-            forage.CanCollide = true
-            forage.Anchored = false
-            forage:FindFirstChild("forage_value").Value = false
-        else
-            
-            local player_inventory = Inventories:FindFirstChild(player.Name)
-            if player_inventory then
-                print ("ready to pick up")
-                AddItem(player_inventory, forage, player)
+    if forage then
+        if forage:FindFirstChild("forage_value") then
+            local forageable = forage:FindFirstChild("forage_value").Value
+            if forageable then
+                forage.Size = Vector3.new(forage.Size.X/2, forage.Size.Y/2, forage.Size.Z/2)
+                forage.CanCollide = true
+                forage.Anchored = false
+                forage:FindFirstChild("forage_value").Value = false
             else
-                local player_folder = Instance.new("Folder", Inventories)
-                player_folder.Name = player.Name
-                AddItem(player_folder, forage, player)
+                
+                local player_inventory = Inventories:FindFirstChild(player.Name)
+                if player_inventory then
+                    print ("ready to pick up")
+                    AddItem(player_inventory, forage, player)
+                else
+                    local player_folder = Instance.new("Folder", Inventories)
+                    player_folder.Name = player.Name
+                    AddItem(player_folder, forage, player)
+                end
+
             end
 
         end
-
     end
 end
 
