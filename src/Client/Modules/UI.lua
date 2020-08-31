@@ -6,7 +6,14 @@ local Players = game:GetService("Players")
 
 local PlayerGui = Players.LocalPlayer.PlayerGui
 
+local Inventory = Roact.Component:extend("Inventory")
 
+function Inventory:init()
+    -- In init, we can use setState to set up our initial component state.
+    self:setState({
+        name = "Inventory"
+    })
+end
 
 --local function HelloUI(props)
   --  local name = props.name
@@ -29,16 +36,21 @@ local function create_element(properties)
     })
 end
 
-local hello_ui = Roact.createElement("ScreenGui",{},{
+function Inventory:render()
+    local default_name = self.state.name
+
+    return Roact.createElement("ScreenGui",{},{
     Layout = Roact.createElement("UIListLayout"),
     hello1 = Roact.createElement(create_element, {
-        name = "Joe"
+        name = default_name
     }),
     hello2= Roact.createElement(create_element, {
         name = "Joe2"
     })
 })
 
-Roact.mount(hello_ui, PlayerGui)
+end
+
+local inventory_handle = Roact.mount(Roact.createElement(Inventory), PlayerGui, "Inventory UI")
 
 return UI
