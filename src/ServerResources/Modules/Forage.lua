@@ -25,6 +25,7 @@ local function AddItem(player_inventory, item, player)
 
         item_value.Parent = new_item 
         count_value.Parent = new_item
+        Events:FindFirstChild("inventory_update"):FireClient(player, count_value.Value, item.Name)
         item:Destroy()
     end
 
