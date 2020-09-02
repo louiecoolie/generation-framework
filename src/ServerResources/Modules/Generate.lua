@@ -81,11 +81,49 @@ function Generate.Dungeon(region_center, region_radius, region_height, complexit
     end
 
     local function ScanRegion(center)
-        for i=1, complexity do
+        local first_segment = {}
+        local next_segment = {}
+        local last_segment = {}
+        for i=1, 4 do
             local new_room = center:Clone()
+            first_segment[i] = new_room
             new_room.CFrame = CFrame.new(new_room.Position) * CFrame.Angles(0, math.rad(90) * i, 0) * CFrame.new(new_room.Size.X,0,0)
             new_room.Parent = dungeon_object
         end
+
+        for _, part in pairs(first_segment) do
+            local max =math.random(1, complexity)
+            for i=1, max do
+                local new_room = part:Clone()
+                new_room.CFrame = new_room.CFrame * CFrame.new(new_room.Size.X*i,0,0)
+                new_room.Parent = dungeon_object
+                if i == max then
+                    table.insert(next_segment, new_room)
+                end
+            end
+        end
+
+        for _, part in pairs(next_segment) do
+            local max =math.random(1, complexity)
+            for i=1, max do
+                local new_room = part:Clone()
+                new_room.CFrame = new_room.CFrame * CFrame.new(0,0,new_room.Size.Z*i)
+                new_room.Parent = dungeon_object
+                if i == max then
+                    table.insert(last_segment, new_room)
+                end
+            end
+        end
+
+        for _, part in pairs(last_segment) do
+            local max =math.random(1, complexity)
+            for i=1, max do
+                local new_room = part:Clone()
+                new_room.CFrame = new_room.CFrame * CFrame.new(new_room.Size.X*i,0,0)
+                new_room.Parent = dungeon_object
+            end
+        end
+
     end
 
     local function GenerateRegion()
