@@ -6,6 +6,9 @@ points_container.Name = "points_container"
 local islands_container = workspace:FindFirstChild("islands_container") or Instance.new("Folder", workspace)
 islands_container.Name = "islands_container"
 
+local dungeons_container = workspace:FindFirstChild("dungeons_container") or Instance.new("Folder", workspace)
+dungeons_container.Name = "dungeons_container"
+
 local generation_number = 0
 
 function Generate.Spawns(region_center, region_radius, spawn_points, spawn_gap, spawn_animal, spawn_plant)
@@ -67,6 +70,41 @@ function Generate.Ocean(region_center, region_radius, region_height)
     sand:ExpandToGrid(4)
     workspace:WaitForChild("Terrain"):FillRegion(sand, 4, Enum.Material.Sand)
 end
+
+
+
+function Generate.Dungeon(region_center, region_radius, region_height, complexity)
+    local dungeon_object = Instance.new("Model", dungeons_container)
+
+    local function CreateRoom() 
+
+    end
+
+    local function ScanRegion(center)
+        for i=1, complexity do
+            local new_room = center:Clone()
+            new_room.CFrame = CFrame.new(new_room.Position) * CFrame.Angles(0, math.rad(90) * i, 0) * CFrame.new(new_room.Size.X,0,0)
+            new_room.Parent = dungeon_object
+        end
+    end
+
+    local function GenerateRegion()
+        local center = Instance.new("Part")
+        center.Name = "Center"
+        center.Position = region_center
+        center.Size = Vector3.new(region_radius, region_height, region_radius)
+        center.Anchored = true
+        center.CanCollide = true
+        center.Parent = dungeon_object
+
+        ScanRegion(center)
+
+    end
+
+    GenerateRegion()
+
+end
+
 
 function Generate.Island(region_center, region_radius, region_height, complexity)
     local island_object = Instance.new("Model")

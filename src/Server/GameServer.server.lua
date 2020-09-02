@@ -28,6 +28,7 @@ function init.GenerateServer()
     Modules["Generate"].Island(Vector3.new(0,0,0), 50, 15, 4)
     Modules["Generate"].Spawns(Vector3.new(0,4,0), 30, 20, 0, "Doe")
     Modules["Generate"].Spawns(Vector3.new(0,20,-30), 30, 5, 0, nil, "Oak")
+    Modules["Generate"].Dungeon(Vector3.new(50,50,50), 10, 10, 4)
 end
 
 function init:CreateConnections()
