@@ -55,6 +55,7 @@ end
 function init.CreateConnections()
 
 	Controllers["Keyboard"].Bind("forage", Modules["Tool"].Forage, false, Enum.UserInputType.MouseButton1)
+	Controllers["Keyboard"].Bind("backpack", Modules["UI"].ToggleInventory, false, Enum.KeyCode.E)
 end
 
 function init.Disconnect()

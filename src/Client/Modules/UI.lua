@@ -2,11 +2,22 @@ local UI = {}
 
 local Roact = require(game:GetService("ReplicatedStorage").Roact)
 local Players = game:GetService("Players")
-
 local ClientEvents = game:GetService("ReplicatedStorage"):WaitForChild("Events", 60)
 
 local player_inventory = {}
 local Events = {}
+
+local ui_state = {
+    inventory = false
+}
+
+local ui_handles = {
+    inventory_handle = nil
+}
+
+local ui_connections = {
+    update_inventory = nil
+}
 
 for _, event in ipairs(ClientEvents:GetChildren()) do
     ClientEvents:WaitForChild(event.Name, 5)
@@ -21,6 +32,7 @@ end
 local PlayerGui = Players.LocalPlayer.PlayerGui
 
 local Inventory = Roact.Component:extend("Inventory")
+local Toolbar = Roact.Component:extend("Toolbar")
 
 function Inventory:init()
     -- In init, we can use setState to set up our initial component state.
@@ -86,21 +98,69 @@ function Inventory:didMount()
           
 end
 
-
-
-local inventory_handle = Roact.mount(Roact.createElement(Inventory), PlayerGui, "Inventory UI")
-
-Events["inventory_update"].OnClientEvent:Connect(function(number, object)
-
-    player_inventory[object] = number
-
-    inventory_dictionary[object] = Roact.createElement(create_element, {
-        name = object,
-        count = number
+function Toolbar:init()
+    self:setState({
+        frame = "rbxassetid://5645586350",
+        backpack_close = "rbxassetid://5645586537"
     })
-    Roact.unmount(inventory_handle)
-    inventory_handle = Roact.mount(Roact.createElement(Inventory), PlayerGui, "Inventory UI")
+end
 
-end)
+function Toolbar:render()
+
+    return Roact.createElement("ScreenGui", {}, {
+        Tools = Roact.createElement("Frame",{
+            Size =  UDim2.new(0, 100, 0, 100),
+            Position = UDim2.new(.5, -50, 1, -100),
+            BackgroundTransparency = 1
+        },{
+            Backpack = Roact.createElement("Frame", {
+                Size = UDim2.new(0, 100, 0, 100),
+                BackgroundTransparency = 1
+            },{
+                Frame = Roact.createElement("ImageLabel", {
+                    Size = UDim2.new(0, 100, 0, 100),
+                    Image = self.state.frame,
+                    BackgroundTransparency = 1,
+                    ZIndex = 0
+                }),
+                Icon = Roact.createElement("ImageLabel", {
+                    Size = UDim2.new(0, 50, 0, 50),
+                    Image = self.state.backpack_close,
+                    Position = UDim2.new(0,25,0,25),
+                    BackgroundTransparency = 1,
+                    ZIndex = 1
+                })
+            })
+        })
+    })
+
+end
+
+ui_handles.toolbar_handle = Roact.mount(Roact.createElement(Toolbar), PlayerGui, "Toolbar UI")
+
+function UI.ToggleInventory(action, input_state)
+    print(action)
+    if input_state == Enum.UserInputState.Begin then
+        if ui_state.inventory == false then
+            ui_handles.inventory_handle = Roact.mount(Roact.createElement(Inventory), PlayerGui, "Inventory UI")
+            ui_connections.update_inventory = Events["inventory_update"].OnClientEvent:Connect(function(number, object)
+
+                player_inventory[object] = number
+            
+                inventory_dictionary[object] = Roact.createElement(create_element, {
+                    name = object,
+                    count = number
+                })
+                Roact.unmount(ui_handles.inventory_handle)
+                ui_handles.inventory_handle = Roact.mount(Roact.createElement(Inventory), PlayerGui, "Inventory UI")
+            end)
+            ui_state.inventory = true
+        elseif ui_state.inventory == true then
+            Roact.unmount(ui_handles.inventory_handle)
+            ui_connections.update_inventory:Disconnect()
+            ui_state.inventory = false
+        end
+    end
+end
 
 return UI
