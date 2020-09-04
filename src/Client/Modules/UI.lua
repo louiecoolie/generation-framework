@@ -35,6 +35,7 @@ local Inventory = Roact.Component:extend("Inventory")
 local Toolbar = Roact.Component:extend("Toolbar")
 
 function Inventory:init()
+    self.inventoryRef = Roact.createRef()
     -- In init, we can use setState to set up our initial component state.
     self:setState({
         name = "Inventory",
@@ -44,7 +45,7 @@ function Inventory:init()
         background = "rbxassetid://5647360086",
         default_size = 300,
         default_offset = 150,
-        inventoryRef = Roact.createRef()
+
     })
 end
 
@@ -63,15 +64,16 @@ local function create_element(properties)
     return Roact.createElement("TextLabel", {
         Text = text,
         BackgroundTransparency = 1,
+        BorderSizePixel = 2,
         Size = UDim2.new(.2,0,.2,0)
     })
 end
 
 local inventory_dictionary = {
-    Layout = Roact.createElement("UIListLayout"),
-    hello1 = Roact.createElement(create_element, {
-        name = "Inventory"
-    })
+    Layout = Roact.createElement("UIListLayout",{
+        --Padding = UDim.new(10,10)
+        --FillDirection = Enum.FillDirection.Horizontal
+    }),
 }
 
 function Inventory:render()
@@ -101,15 +103,16 @@ function Inventory:render()
                 ZIndex = 1
             }),
             inventory = Roact.createElement("Frame",{
-                [Roact.Ref] = self.state.inventoryRef,
+                [Roact.Ref] = self.inventoryRef,
                 Size = UDim2.new(0,size/1.5, 0, size/1.5),
                 Position =UDim2.new(.5,-offset/1.5,.5,-offset/1.5),
                 Transparency = 1,
-                ZIndex = 1
+                ZIndex = 1,
             },
+                
             
             
-            --inventory_dictionary
+              inventory_dictionary
 
 
             )
@@ -121,22 +124,16 @@ end
 
 function Inventory:didMount()
 
-    local inventoryFrame = self.inventoryRef:getValue()
+    local inventoryFrame = self.inventoryRef
+   -- print(inventoryFrame)
 
 
-            ui_connections.update_inventory = Events["inventory_update"].OnClientEvent:Connect(function(number, object)
-
-               player_inventory[object] = number
             
-               -- inventory_dictionary[object] = Roact.createElement(create_element, {
-                  -- name = object,
-                   -- count = number
-               -- })
-               -- Roact.unmount(ui_handles.inventory_handle)
-                --ui_handles.inventory_handle = Roact.mount(Roact.createElement(Inventory), PlayerGui, "Inventory UI")
-            end)         
 end
 
+function Inventory:willUnmount()
+    --ui_connections.update_inventory:Disconnect()
+end
 
 
 function Toolbar:init()
@@ -222,23 +219,36 @@ function UI.ToggleInventory(action, input_state)
     print(action)
     if input_state == Enum.UserInputState.Begin then
         if ui_state.inventory == false then
-            ui_handles.inventory_handle = Roact.mount(Roact.createElement(Inventory), PlayerGui, "Inventory UI")
-           -- ui_connections.update_inventory = Events["inventory_update"].OnClientEvent:Connect(function(number, object)
+            if ui_connections.passive_inventory then
+                 ui_connections.passive_inventory:Disconnect() 
+            end
 
-               -- player_inventory[object] = number
+            ui_handles.inventory_handle = Roact.mount(Roact.createElement(Inventory), PlayerGui, "Inventory UI")
+            ui_connections.update_inventory = Events["inventory_update"].OnClientEvent:Connect(function(number, object)
+
+                player_inventory[object] = number
             
-               -- inventory_dictionary[object] = Roact.createElement(create_element, {
-                  -- name = object,
-                   -- count = number
-               -- })
-               -- Roact.unmount(ui_handles.inventory_handle)
-                --ui_handles.inventory_handle = Roact.mount(Roact.createElement(Inventory), PlayerGui, "Inventory UI")
-           -- end)
+                inventory_dictionary[object] = Roact.createElement(create_element, {
+                   name = object,
+                    count = number
+                })
+                Roact.unmount(ui_handles.inventory_handle)
+                ui_handles.inventory_handle = Roact.mount(Roact.createElement(Inventory), PlayerGui, "Inventory UI")
+            end)
             ui_state.inventory = true
             --ui_handles.toolbar_handle = Roact.update(ui_handles.toolbar_handle)
         elseif ui_state.inventory == true then
             Roact.unmount(ui_handles.inventory_handle)
-            --ui_connections.update_inventory:Disconnect()
+            ui_connections.update_inventory:Disconnect()
+            ui_connections.passive_inventory = Events["inventory_update"].OnClientEvent:Connect(function(number, object)
+
+                player_inventory[object] = number
+            
+                inventory_dictionary[object] = Roact.createElement(create_element, {
+                   name = object,
+                    count = number
+                })
+            end)
             ui_state.inventory = false
         end
     end
