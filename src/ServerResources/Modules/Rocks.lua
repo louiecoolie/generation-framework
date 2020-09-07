@@ -6,6 +6,19 @@ rocks_container.Name = "rocks_container"
 
 local generated_rocks = {}
 
+function CreateRock(rock)
+    local forage_value = Instance.new("BoolValue")
+    forage_value.Name = "forage_value"
+    forage_value.Value = true
+
+    for _, part in pairs(rock:GetChildren()) do
+        if part:IsA("BasePart") then
+            local forage = forage_value:Clone()
+            forage.Parent = part
+        end
+    end
+end
+
 function Rocks.Create(rock, position, spawn_object)
     local generation_number = spawn_object:FindFirstChild("spawn_number")
 
@@ -38,6 +51,7 @@ function Rocks.Create(rock, position, spawn_object)
             rock_request.Parent = rocks_container
 
            -- CreateTree(plant_request)
+           CreateRock(rock_request)
 
            generated_rocks[generation_number] = rock_request
         end

@@ -109,8 +109,9 @@ local function create_element(properties)
 end
 
 local inventory_dictionary = {
-    Layout = Roact.createElement("UIListLayout",{
-        FillDirection = Enum.FillDirection.Horizontal
+    Layout = Roact.createElement("UIGridLayout",{
+        FillDirection = Enum.FillDirection.Horizontal,
+        FillDirectionMaxCells = 2
     }),
 }
 
@@ -142,7 +143,7 @@ function Inventory:render()
             }),
             inventory = Roact.createElement("Frame",{
                 [Roact.Ref] = self.inventoryRef,
-                Size = UDim2.new(0,size/1.5, 0, size/1.5),
+                Size = UDim2.new(0,size, 0, size),
                 Position =UDim2.new(.5,-offset/1.5,.5,-offset/1.5),
                 Transparency = 1,
                 ZIndex = 2,
