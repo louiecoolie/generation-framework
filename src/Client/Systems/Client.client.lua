@@ -118,6 +118,7 @@ function init.EstablishConnections()
 				local request_value = object:FindFirstChild("request_value")
 				local spawn_value = object:FindFirstChild("spawn_value")
 				local plant_value = object:FindFirstChild("plant_value")
+				local rock_value = object:FindFirstChild("rock_value")
 
 				if request_value.Value == "nil" then
 					request_value.Value = "true"
@@ -128,6 +129,9 @@ function init.EstablishConnections()
 					if plant_value.Value then
 						Events["plant_request"]:FireServer(plant_value.Value, object.CFrame, object)
 					
+					end
+					if rock_value.Value then
+						Events["rock_request"]:FireServer(rock_value.Value, object.CFrame, object)
 					end
 				end
 			end

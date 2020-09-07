@@ -28,6 +28,7 @@ function init.GenerateServer()
     Modules["Generate"].Island(Vector3.new(0,0,0), 50, 15, 4)
     Modules["Generate"].Spawns(Vector3.new(0,4,0), 30, 20, 0, "Doe")
     Modules["Generate"].Spawns(Vector3.new(0,20,-30), 30, 5, 0, nil, "Oak")
+    Modules["Generate"].Spawns(Vector3.new(0,20,-30), 30, 5, 0, nil, nil, "Rock")
     Modules["Generate"].Dungeon(Vector3.new(50,50,50), 10, 10, 4)
 end
 
@@ -35,6 +36,7 @@ function init:CreateConnections()
     self.ForageRequest = Modules["Request"].RemoteEvent("forage_request", Events)
     self.InventoryUpdate = Modules["Request"].RemoteEvent("inventory_update", Events)
     self.PlantRequest = Modules["Request"].RemoteEvent("plant_request", Events)
+    self.RockRequest = Modules["Request"].RemoteEvent("rock_request", Events)
 	self.AnimalRequest = Modules["Request"].RemoteEvent("animal_request", Events) --print(UpdateArea.Scan(char))
 end
 
@@ -58,6 +60,10 @@ function init:EstablishConnections()
     end)
     connections.Plants = self.PlantRequest.OnServerEvent:Connect(function(player, plant, position, spawn_object)
         Modules["Plants"].Grow(Assets.Plant:FindFirstChild(plant), position, spawn_object)
+    end)
+
+    connections.Rocks = self.RockRequest.OnServerEvent:Connect(function(player, rock, position, spawn_object)
+        Modules["Rocks"].Create(Assets.Rock:FindFirstChild(rock), position, spawn_object)
     end)
 
     connections.UpdatePlayers = RunService.Heartbeat:Connect(function()

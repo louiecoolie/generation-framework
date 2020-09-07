@@ -11,7 +11,7 @@ dungeons_container.Name = "dungeons_container"
 
 local generation_number = 0
 
-function Generate.Spawns(region_center, region_radius, spawn_points, spawn_gap, spawn_animal, spawn_plant)
+function Generate.Spawns(region_center, region_radius, spawn_points, spawn_gap, spawn_animal, spawn_plant, spawn_rock)
 
     local function CreateSpawnPoint(position)
         generation_number += 1
@@ -40,10 +40,15 @@ function Generate.Spawns(region_center, region_radius, spawn_points, spawn_gap, 
         plant_value.Name = "plant_value"
         plant_value.Value = spawn_plant or "nil"
 
+        local rock_value = Instance.new("StringValue")
+        rock_value.Name = "rock_value"
+        rock_value.Value = spawn_rock or "nil"
+
         request_value.Parent = spawn_point
         spawn_value.Parent = spawn_point
         spawn_number.Parent = spawn_point
         plant_value.Parent = spawn_point
+        rock_value.Parent = spawn_point
         
 		spawn_point.Parent = points_container	
 	end

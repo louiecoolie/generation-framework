@@ -9,7 +9,7 @@ local function AddItem(player_inventory, item, player)
     local player_item = player_inventory:FindFirstChild(item.Name)
     if player_item then
         player_item.Count.Value = player_item.Count.Value + 1
-        Events:FindFirstChild("inventory_update"):FireClient(player, player_item.Count.Value, item.Name)
+        Events:FindFirstChild("inventory_update"):FireClient(player, player_item.Count.Value, item)
         item:Destroy()
     else
         local new_item = Instance.new("Folder", player_inventory)
@@ -25,7 +25,7 @@ local function AddItem(player_inventory, item, player)
 
         item_value.Parent = new_item 
         count_value.Parent = new_item
-        Events:FindFirstChild("inventory_update"):FireClient(player, count_value.Value, item_value.Name)
+        Events:FindFirstChild("inventory_update"):FireClient(player, count_value.Value, item)
         item:Destroy()
     end
 
