@@ -42,10 +42,10 @@ function Inventory:init()
         name = "Inventory",
         count = 0,
         inventory = {},
-        splash = "rbxassetid://5647359993",
-        background = "rbxassetid://5647360086",
-        default_size = 300,
-        default_offset = 150,
+        splash = "rbxassetid://5667517917",
+        background = "rbxassetid://5667517869",
+        default_size = 450,
+        default_offset = (450/2),
 
     })
 end
@@ -111,7 +111,7 @@ end
 local inventory_dictionary = {
     Layout = Roact.createElement("UIGridLayout",{
         FillDirection = Enum.FillDirection.Horizontal,
-        FillDirectionMaxCells = 2
+        FillDirectionMaxCells = 3
     }),
 }
 
@@ -125,36 +125,51 @@ function Inventory:render()
             Position = UDim2.new(.5,-50,.5,-100),
             Transparency = 1
         },{
-            Backdrop = Roact.createElement("ImageLabel", {
-                Size = UDim2.new(0, size, 0, size),
+            BackpackFrame = Roact.createElement("ImageLabel", {
+                Size = UDim2.new(0, size*2, 0, size),
                 Image = self.state.background,
                 Transparency = 1,
-                Position = UDim2.new(.5,-offset,.5,-offset),
+                Position = UDim2.new(.5,-offset*2,.5,-offset),
+                BackgroundTransparency = 1,
+                ZIndex = 1
+            },{
+                inventory = Roact.createElement("Frame",{
+                    [Roact.Ref] = self.inventoryRef,
+                    Size = UDim2.new(0,size/1.1, 0, size/1.8),
+                   Position = UDim2.new(.5,-offset/1.1,.5,-offset/1.7),
+                    Transparency = 1,
+                    ZIndex = 2,
+                },
+                    
+                
+                
+                  inventory_dictionary
+    
+    
+                )
+            }),
+            ColorSplash = Roact.createElement("ImageLabel", {
+                Size = UDim2.new(0, size*2, 0, size),
+                Image = self.state.splash,
+                Transparency = 1,
+                Position = UDim2.new(.5,-offset*2,.5,-offset),
                 BackgroundTransparency = 1,
                 ZIndex = 0
             }),
-            ColorSplash = Roact.createElement("ImageLabel", {
-                Size = UDim2.new(0, size, 0, size),
-                Image = self.state.splash,
-                Transparency = 1,
-                Position = UDim2.new(.5,-offset,.5,-offset),
-                BackgroundTransparency = 1,
-                ZIndex = 1
-            }),
-            inventory = Roact.createElement("Frame",{
-                [Roact.Ref] = self.inventoryRef,
-                Size = UDim2.new(0,size, 0, size),
-                Position =UDim2.new(.5,-offset/1.5,.5,-offset/1.5),
-                Transparency = 1,
-                ZIndex = 2,
-            },
+        --    inventory = Roact.createElement("Frame",{
+         --       [Roact.Ref] = self.inventoryRef,
+          --      Size = UDim2.new(0,size*2, 0, size),
+           --     Position =UDim2.new(.5,-offset*2,.5,-offset),
+          --      Transparency = 1,
+          --      ZIndex = 2,
+          --  },
                 
             
             
-              inventory_dictionary
+           --   inventory_dictionary
 
 
-            )
+           -- )
         })
     })
 
