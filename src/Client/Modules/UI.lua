@@ -125,6 +125,25 @@ function Inventory:render()
             Position = UDim2.new(.5,-50,.5,-100),
             Transparency = 1
         },{
+            InventoryButton = Roact.createElement("TextButton", {
+                Size = UDim2.new(0,100,0,50),
+                Position = UDim2.new(0,-size/1.5,0,0),
+                Text = "Inventory",
+                ZIndex = 100
+
+
+            }),
+
+            CraftButton = Roact.createElement("TextButton", {
+                Size = UDim2.new(0,100,0,50),
+                Text = "Craft",
+                Position = UDim2.new(0,-size/1.5,0,100),
+                ZIndex = 100
+
+
+            }),
+
+
             BackpackFrame = Roact.createElement("ImageLabel", {
                 Size = UDim2.new(0, size*2, 0, size),
                 Image = self.state.background,
